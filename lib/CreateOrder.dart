@@ -1,8 +1,24 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:verbose_user/Orders.dart';
 
-class CreateOrder extends StatelessWidget {
+final databaseReference = FirebaseDatabase.instance.reference();
+class CreateOrder extends StatefulWidget {
+  final String title;
+
+  CreateOrder({Key key, this.title}) : super(key: key);
+
+  @override
+  _CreateOrder createState() => _CreateOrder();
+
+}
+
+
+class _CreateOrder extends State<CreateOrder> {
+  String selected;
+  List items = ["Food", "Clothing", "Others"];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,10 +38,31 @@ class CreateOrder extends StatelessWidget {
 
           Container(
             margin: const EdgeInsets.only(top: 150),
-            width: 100.0,
-            height: 50.0,
-            child: DropdownButton(), // Update this later
+            child: DropdownButton(
+              hint: Text("Select Item"),
+              icon: Icon(Icons.arrow_downward),
+              value: this.selected,
+              onChanged: (newVal){
+                setState((){
+                  this.selected = newVal;
+                });
+              },
+              items: this.items.map((valueItem){
+                return DropdownMenuItem(
+                  value: valueItem,
+                  child: Text(valueItem),
+                );
+              }).toList(),
+            ),
           ),
+          
+          // Expanded(
+          //   child: ListView(
+          //     children: [
+          //
+          //     ],
+          //   ),
+          // ),
 
           Container(
             width: 100.0,
