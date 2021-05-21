@@ -1,3 +1,4 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:verbose_user/StockData.dart';
 import 'package:verbose_user/StoreStock.dart';
 
@@ -9,7 +10,7 @@ class MakeCallStock {
       DataSnapshot dataSnapshot = await databaseReference.once();
       Map<dynamic, dynamic> jsonResponse = dataSnapshot.value[0]["content"];
       stockList = new StoreStock.fromJSON(jsonResponse);
-      listItems.addAll(stocklist.stock_list);
+      listItems.addAll(stockList.stock_list);
     return listItems;
   }
 }
