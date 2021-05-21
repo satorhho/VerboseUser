@@ -14,10 +14,10 @@ class CreateOrder extends StatefulWidget {
 
 }
 
-
 class _CreateOrder extends State<CreateOrder> {
   String selected;
   List items = ["Food", "Clothing", "Others"];
+  final databaseReference = FirebaseDatabase.instance.reference();
 
   @override
   Widget build(BuildContext context) {
@@ -56,13 +56,35 @@ class _CreateOrder extends State<CreateOrder> {
             ),
           ),
           
-          // Expanded(
-          //   child: ListView(
-          //     children: [
-          //
-          //     ],
-          //   ),
-          // ),
+          RaisedButton(
+            child: Text("Create"),
+            onPressed: (){
+              print("Code reached here1");
+              this.createData("SID2", "clothing", "clothing description");
+              print("Code reached here2");
+            },
+          ),
+          
+          RaisedButton(
+            child: Text("Delete"),
+            onPressed: (){
+              this.deleteData("Stock");
+            },
+          ),
+          
+          RaisedButton(
+            child: Text("Update"),
+            onPressed: (){
+              this.updateData("User", "user_name", "jay2borazon");
+              },
+          ),
+
+          RaisedButton(
+            child: Text("Read"),
+            onPressed: (){
+              this.readData();
+            },
+          ),
 
           Container(
             width: 100.0,
@@ -84,4 +106,24 @@ class _CreateOrder extends State<CreateOrder> {
     );
   }
 
+  void createData(String id, String name, String desc){
+    this.databaseReference.child("Stock").set({
+      "stock_id" : "${id}",
+      "name" : "${name}",
+      "description" : "${desc}"
+    });
+  }
+  void deleteData(String reference){
+    this.databaseReference.child(reference).remove();
+  }
+  void readData(){
+    databaseReference.once().then((DataSnapshot snapshot) {
+      print('Data : ${snapshot.value}');
+    });
+  }
+  void updateData(String child, String key, String value){
+    this.databaseReference.child(child).update({
+      "${key}" : "${value}"
+    });
+  }
 }
