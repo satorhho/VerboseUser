@@ -19,24 +19,24 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Verbose User',
       theme: ThemeData.dark(),
-      //home: LoginPage(),
-      home: FutureBuilder(
-        future: _fbApp,
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            print("You have an error! ${snapshot.error.toString()}");
-            return Text("Something went wrong!");
-          }
-          else if (snapshot.hasData) {
-            return LoginPage();
-          }
-          else {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-        },
-      ),
+      home: LoginPage(),
+      // home: FutureBuilder(
+      //   future: _fbApp,
+      //   builder: (context, snapshot) {
+      //     if (snapshot.hasError) {
+      //       print("You have an error! ${snapshot.error.toString()}");
+      //       return Text("Something went wrong!");
+      //     }
+      //     else if (snapshot.hasData) {
+      //       return LoginPage();
+      //     }
+      //     else {
+      //       return Center(
+      //         child: CircularProgressIndicator(),
+      //       );
+      //     }
+      //   },
+      // ),
       //home: Menu(),
       //home: CreateOrder(),
       //home: Orders(),

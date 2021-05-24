@@ -1,7 +1,11 @@
+import 'dart:convert';
+
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:verbose_user/Orders.dart';
+import 'package:verbose_user/StockData.dart';
+import 'package:verbose_user/StoreStock.dart';
 
 final databaseReference = FirebaseDatabase.instance.reference();
 class CreateOrder extends StatefulWidget {
@@ -16,7 +20,8 @@ class CreateOrder extends StatefulWidget {
 
 class _CreateOrder extends State<CreateOrder> {
   String selected;
-  List items = ["Food", "Clothing", "Others"];
+  List<Object> mylist = [];
+  List<String> items = ["fak", "you", "dog"];
   final databaseReference = FirebaseDatabase.instance.reference();
 
   @override
@@ -55,14 +60,15 @@ class _CreateOrder extends State<CreateOrder> {
               }).toList(),
             ),
           ),
-          
-          RaisedButton(
-            child: Text("Create"),
-            onPressed: (){
-              print("Code reached here1");
-              this.createData("SID2", "clothing", "clothing description");
-              print("Code reached here2");
-            },
+
+          Container(
+            margin: const EdgeInsets.all(30),
+            width: 200,
+            child: TextField(
+              decoration: InputDecoration(
+                hintText: "Enter username",
+              ),
+            ),
           ),
           
           RaisedButton(
@@ -71,13 +77,7 @@ class _CreateOrder extends State<CreateOrder> {
               this.deleteData("Stock");
             },
           ),
-          
-          RaisedButton(
-            child: Text("Update"),
-            onPressed: (){
-              this.updateData("User", "user_name", "jay2borazon");
-              },
-          ),
+
 
           RaisedButton(
             child: Text("Read"),
@@ -113,8 +113,20 @@ class _CreateOrder extends State<CreateOrder> {
       "description" : "${desc}"
     });
   }
+  void createDataTest(String id){
+    this.databaseReference.child("Stock").set({
+      "stock_id" : "$id",
+
+    });
+  }
   void deleteData(String reference){
-    this.databaseReference.child(reference).remove();
+    List mylist;
+    this.databaseReference.child("Stock").once().then((DataSnapshot snapshot){
+      Map<dynamic, dynamic> value = snapshot.value;
+      value.forEach((key,values) {
+        print(key);
+      });
+    });
   }
   void readData(){
     databaseReference.once().then((DataSnapshot snapshot) {
