@@ -4,6 +4,18 @@ import 'package:flutter/material.dart';
 import 'Menu.dart';
 
 class Orders extends StatelessWidget {
+
+  List<dynamic> order_ids;
+  List<dynamic> statuses;
+
+  Orders(List<String> orderIds, List<String> statusList){
+    this.order_ids = orderIds;
+    this.statuses = statusList;
+
+    print(order_ids);
+    print(statuses);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,11 +36,11 @@ class Orders extends StatelessWidget {
           Row(
             children: [
               Container(
-                margin: const EdgeInsets.only(left: 50),
+                margin: const EdgeInsets.only(left: 75),
                 child: Text("Order ID"),
               ),
               Container(
-                margin: const EdgeInsets.only(left: 175, right: 50),
+                margin: const EdgeInsets.only(left: 145, right: 50),
                 child: Text("Status"),
               ),
             ],
@@ -39,60 +51,30 @@ class Orders extends StatelessWidget {
               children: [
                 // FOR ORDER ID
                 Expanded(
-                  child: ListView(
-                    padding: const EdgeInsets.only(top: 20, left: 30),
-                    children: [
-                      Text("Hello, World!"),
-                      Text("Hello, World!"),
-                      Text("Hello, World!"),
-                      Text("Hello, World!"),
-                      Text("Hello, World!"),
-                      Text("Hello, World!"),
-                      Text("Hello, World!"),
-                      Text("Hello, World!"),
-                      Text("Hello, World!"),
-                      Text("Hello, World!"),
-                      Text("Hello, World!"),
-                      Text("Hello, World!"),
-                      Text("Hello, World!"),
-                      Text("Hello, World!"),
-                      Text("Hello, World!"),
-                      Text("Hello, World!"),
-                      Text("Hello, World!"),
-                      Text("Hello, World!"),
-
-                    ],
+                  child: ListView.builder(
+                      itemCount: this.order_ids.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return Container(
+                          height: 50,
+                          child: Center(child: Text('${this.order_ids[index]}')),
+                        );
+                      },
                   ),
                 ),
 
                 //FOR STATUS
 
                 Expanded(
-                  child: ListView(
-                    padding: const EdgeInsets.only(top: 20, left: 60),
-                    children: [
-                      Text("Hello, World!"),
-                      Text("Hello, World!"),
-                      Text("Hello, World!"),
-                      Text("Hello, World!"),
-                      Text("Hello, World!"),
-                      Text("Hello, World!"),
-                      Text("Hello, World!"),
-                      Text("Hello, World!"),
-                      Text("Hello, World!"),
-                      Text("Hello, World!"),
-                      Text("Hello, World!"),
-                      Text("Hello, World!"),
-                      Text("Hello, World!"),
-                      Text("Hello, World!"),
-                      Text("Hello, World!"),
-                      Text("Hello, World!"),
-                      Text("Hello, World!"),
-                      Text("Hello, World!"),
-
-                    ],
+                  child: ListView.builder(
+                    itemCount: this.statuses.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Container(
+                        height: 50,
+                        child: Center(child: Text('${this.statuses[index]}')),
+                      );
+                    },
                   ),
-                )
+                ),
 
               ],
             )

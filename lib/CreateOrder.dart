@@ -20,8 +20,7 @@ class CreateOrder extends StatefulWidget {
 
 class _CreateOrder extends State<CreateOrder> {
   String selected;
-  List<Object> mylist = [];
-  List<String> items = ["fak", "you", "dog"];
+  List<String> items = ["Food", "Clothing", "Hardware"];
   final databaseReference = FirebaseDatabase.instance.reference();
 
   @override
@@ -61,56 +60,111 @@ class _CreateOrder extends State<CreateOrder> {
             ),
           ),
 
-          Container(
-            margin: const EdgeInsets.all(30),
-            width: 200,
-            child: TextField(
-              decoration: InputDecoration(
-                hintText: "Enter username",
+          // OutlineButton(
+          //     onPressed: () {
+          //       List<String> templist = [];
+          //       List<dynamic> templistval = [];
+          //       List<String> status_list = [];
+          //       List<String> oid_list = [];
+          //
+          //       var future1 = this.databaseReference.child("Order").once().then((DataSnapshot snapshot){
+          //         Map<dynamic, dynamic> value = snapshot.value;
+          //         value.forEach((key, values) {
+          //           templist.add(key);
+          //           templistval.add(values);
+          //         });
+          //       });
+          //
+          //       future1.then((value) {
+          //         templistval.forEach((element) {
+          //           oid_list.add(element["order_id"]);
+          //           status_list.add(element["status"]);
+          //         });
+          //
+          //         print(oid_list);
+          //         print(status_list);
+          //       });
+          //
+          //   },
+          // ),
+
+
+          Expanded(
+            child: Container(
+              width: 150.0,
+              height: 50.0,
+              margin: const EdgeInsets.only(top: 250, bottom: 100),
+              child: OutlineButton(
+                child: Text("Checkout"),
+                highlightColor: Colors.white38,
+                onPressed: () {
+                  List<String> templist = [];
+                  List<dynamic> templistval = [];
+                  List<String> status_list = [];
+                  List<String> oid_list = [];
+
+                  var future1 = this.databaseReference.child("Order").once().then((DataSnapshot snapshot){
+                    Map<dynamic, dynamic> value = snapshot.value;
+                    value.forEach((key, values) {
+                      templist.add(key);
+                      templistval.add(values);
+                    });
+                  });
+
+                  future1.then((value) {
+                    // print(templist);
+                    this.createData(templist.length+1);
+                    this.readData();
+
+                    templistval.forEach((element) {
+                      oid_list.add(element["order_id"]);
+                      status_list.add(element["status"]);
+                    });
+
+                    // Navigation here
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Orders(oid_list, status_list)),
+                    );
+                  });
+
+
+
+
+                  // this.databaseReference.child("Order/order").set({
+                  //   "stock_id" : "${id}",
+                  //   "name" : "${name}",
+                  //   "description" : "${desc}"
+                  // });
+                  //
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(builder: (context) => Orders()),
+                  // );
+
+
+                },
               ),
             ),
-          ),
-          
-          RaisedButton(
-            child: Text("Delete"),
-            onPressed: (){
-              this.deleteData("Stock");
-            },
-          ),
-
-
-          RaisedButton(
-            child: Text("Read"),
-            onPressed: (){
-              this.readData();
-            },
-          ),
-
-          Container(
-            width: 100.0,
-            height: 50.0,
-            margin: const EdgeInsets.only(top: 150),
-            child: OutlineButton(
-              child: Text("Checkout"),
-              highlightColor: Colors.white38,
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Orders()),
-                );
-              },
-            ),
-          ),
+          )
         ],
       ),
     );
   }
 
-  void createData(String id, String name, String desc){
-    this.databaseReference.child("Stock").set({
-      "stock_id" : "${id}",
-      "name" : "${name}",
-      "description" : "${desc}"
+  void createData(int counter){
+    String hold_stockid;
+    if (this.selected == "Food")
+      hold_stockid = "SID1";
+    else if (this.selected == "Clothing")
+      hold_stockid = "SID2";
+    else
+      hold_stockid = "SID3";
+
+    this.databaseReference.child("Order/order$counter").set({
+      "order_id" : "OID$counter",
+      "status" : "Pending",
+      "stock_id" : hold_stockid,
     });
   }
   void createDataTest(String id){
@@ -120,11 +174,12 @@ class _CreateOrder extends State<CreateOrder> {
     });
   }
   void deleteData(String reference){
-    List mylist;
-    this.databaseReference.child("Stock").once().then((DataSnapshot snapshot){
+    this.databaseReference.child("Stock/stock1").once().then((DataSnapshot snapshot){
       Map<dynamic, dynamic> value = snapshot.value;
-      value.forEach((key,values) {
-        print(key);
+      value.forEach((key, values) {
+        if(values == "name"){
+          this.items.add(values);
+        }
       });
     });
   }
